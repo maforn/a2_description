@@ -31,13 +31,6 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-add_executable(sim_clock_node src/sim_clock.cpp)
-ament_target_dependencies(sim_clock_node rclcpp rosgraph_msgs unitree_go)
-
-install(TARGETS sim_clock_node
-  DESTINATION lib/${PROJECT_NAME}
-)
-
 # Install the a2 directory to the share folder
 install(DIRECTORY 
   urdf 

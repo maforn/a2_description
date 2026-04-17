@@ -1,6 +1,6 @@
 <mujoco model="a2">
   <compiler angle="radian" meshdir="meshes/"/>
-  <option gravity="0 0 -9.81"/>
+  <option gravity="0 0 -9.81" integrator="implicitfast"/>
 
   <default>
       <default class="hip_joint">
@@ -13,7 +13,7 @@
         <joint damping="1.0" armature="0.03" frictionloss="3.0" />
       </default>
       <default class="collision">
-        <geom group="3" priority="1" condim="6"/>
+        <geom group="3" priority="1" condim="3"/>
       </default>
       <default class="foot">
           <geom group="3" priority="1" condim="6" friction="0.6 0.01 0.01"/>

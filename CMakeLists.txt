@@ -9,6 +9,11 @@ set (
   rclcpp
   sensor_msgs
   rosgraph_msgs
+  nav_msgs
+  geometry_msgs
+  tf2_ros
+  tf2
+  tf2_sensor_msgs
 )
 
 
@@ -16,6 +21,11 @@ find_package(ament_cmake REQUIRED)
 
 find_package(rclcpp REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_sensor_msgs REQUIRED)
 
 find_package(sensor_msgs REQUIRED)
 find_package(unitree_go REQUIRED)

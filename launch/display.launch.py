@@ -44,10 +44,16 @@ def generate_launch_description():
         }]
     )
 
-    # The C++ Bridge Node (LowState -> JointState/IMU)
+    sim_clock_node = Node(
+        package='a2_sim_utils',
+        executable='sim_clock',
+        output='screen',
+        parameters=[{'use_sim_time': False}]
+    )
+
     a2_bridge_node = Node(
-        package='a2_description',
-        executable='a2_bridge_node',
+        package='a2_sim_utils',
+        executable='a2_bridge',
         output='screen',
         parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
@@ -67,6 +73,7 @@ def generate_launch_description():
         rviz_config_arg,
         use_sim_time_arg,
         robot_state_publisher_node,
+        sim_clock_node,
         a2_bridge_node,
         rviz2_node
     ])

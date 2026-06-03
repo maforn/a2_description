@@ -62,6 +62,14 @@ Visualization Manager:
         Reliability Policy: Reliable
       # This allows the image to pop out in a separate floating window
       View Type: TopDown
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: ObjectMarkers
+      Topic:
+        Value: /object_markers
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
   Global Options:
     Fixed Frame: base_link
     Publish TRACE: true

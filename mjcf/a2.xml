@@ -2,6 +2,14 @@
   <compiler angle="radian" meshdir="meshes/"/>
   <option gravity="0 0 -9.81" integrator="implicitfast"/>
 
+  <!-- Camera near-clip plane = znear * model extent. Scenes use extent up to 4,
+       so keep znear small enough that self-geometry right in front of the
+       front_camera (e.g. the lidar mount, ~0-5 cm away) isn't clipped. Applies
+       to every scene that includes this file. -->
+  <visual>
+    <map znear="0.002"/>
+  </visual>
+
   <default>
       <default class="hip_joint">
         <joint damping="0.2" armature="0.03" frictionloss="1.0" />

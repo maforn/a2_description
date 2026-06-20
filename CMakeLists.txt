@@ -9,6 +9,7 @@ install(DIRECTORY
   meshes
   rviz
   launch
+  config
   DESTINATION share/${PROJECT_NAME}
 )
 

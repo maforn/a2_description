@@ -333,7 +333,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /camera/image_raw
+        Value: /camera/image_raw/compressed
       Value: true
     - Class: rviz_default_plugins/MarkerArray
       Enabled: true

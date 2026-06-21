@@ -1,0 +1,33 @@
+# Real A2 front camera intrinsics — equidistant (fisheye) distortion.
+# Calibrated at 1280x720, scaled by 0.5 to 640x360 (fx/fy/cx/cy/skew * 0.5;
+# distortion coefficients are scale-invariant and unchanged).
+# Loaded by gscam2 via a2_pc2 camera.launch.py / pc2.launch.py and published
+# on /camera/camera_info.
+#
+# distortion_model: equidistant — Kannala-Brandt fisheye, coefficients [k1,k2,k3,k4].
+image_width: 640
+image_height: 360
+camera_name: camera
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [220.24271,  -0.410295, 320.932725,
+           0.0     , 225.27951 , 179.696865,
+           0.0     ,   0.0     ,   1.0     ]
+distortion_model: equidistant
+distortion_coefficients:
+  rows: 1
+  cols: 4
+  data: [0.041287, 0.344043, -0.620083, 0.111963]   # [k1, k2, k3, k4]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.0, 0.0, 0.0,
+         0.0, 1.0, 0.0,
+         0.0, 0.0, 1.0]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [220.24271,  -0.410295, 320.932725,   0.0     ,
+           0.0     , 225.27951 , 179.696865,   0.0     ,
+           0.0     ,   0.0     ,   1.0     ,   0.0     ]

@@ -1,0 +1,32 @@
+# MuJoCo sim front camera intrinsics.
+# Derived from the A2 camera spec VFOV=77deg at 480px render height: MuJoCo
+# uses fovy=77 with square pixels, so fx=fy=240/tan(38.5deg)=301.78.
+# Render resolution is 640x480 (see unitree_mujoco bridge); HFOV is ~93deg
+# (not the real camera's 132deg) because of the 4:3 render aspect ratio.
+# Loaded by a2_bridge_sim (a2_unitree_bridge) and published on /camera/camera_info.
+image_width: 640
+image_height: 480
+camera_name: front_camera
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [301.78, 0.0, 319.5,
+         0.0, 301.78, 239.5,
+         0.0, 0.0, 1.0]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.0, 0.0, 0.0, 0.0, 0.0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.0, 0.0, 0.0,
+         0.0, 1.0, 0.0,
+         0.0, 0.0, 1.0]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [301.78, 0.0, 319.5, 0.0,
+         0.0, 301.78, 239.5, 0.0,
+         0.0, 0.0, 1.0, 0.0]

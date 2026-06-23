@@ -1,0 +1,103 @@
+<mujoco model="a2 corridor 08">
+  <include file="a2.xml"/>
+
+  <!--
+    22 x 18 m arena (x: -3..19, y: -9..9). Robot spawns at origin.
+
+    Room layout (top-down):
+
+      x: -3    1  3  5   6          12      19
+    y=9  +------+--+--+---+----------+-------+
+         | NW-hi|     NW-lo          |  NE   |
+    y=6  +--  --+        +-----------+       |
+         |      gap      |           | gap   |
+    y=3  +------+--+--+--+           +-------+
+         |      gap      |                   |
+    y=0  | start         |    east-mid       |
+         |               |                   |
+    y=-3 +--+  +---------+----------+  +-----+
+         |  gap           gap       |  |
+         | SW              SE-west  |  SE-east
+    y=-9 +---+-------------+--------+--+------+
+
+    Doors (all 2 m wide):
+      H1  gap x=1..3,   y=3   (start → NW-lo)
+      H2  gap x=-1..1,  y=-3  (start → SW)
+      H2  gap x=12..14, y=-3  (east-mid → SE)
+      V1  gap y=-1..1,  x=6   (start → east-mid)
+      H3  gap x=0.5..2.5,y=6  (NW-lo → NW-hi)
+      V2  gap y=5.5..7.5,x=12 (NW-lo east ↔ NE)
+      V3  gap y=-6.5..-4.5,x=12 (SE-west ↔ SE-east)
+  -->
+
+  <statistic center="6.4 0 0.1" extent="2.0"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="-130" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+      rgb1="0.18 0.22 0.28" rgb2="0.12 0.15 0.20" markrgb="0.6 0.6 0.6" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.15"/>
+    <material name="wall" rgba="0.72 0.72 0.75 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="6.4 0 10" dir="0 0 -1" directional="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <!-- ===== Outer boundary ===== -->
+    <geom material="wall" pos="-2.4 0 0.75" type="box" size="0.08 7.2 0.75"/>  <!-- west  -->
+    <geom material="wall" pos="15.2 0 0.75" type="box" size="0.08 7.2 0.75"/>  <!-- east  -->
+    <geom material="wall" pos="6.4 -7.2 0.75" type="box" size="8.8 0.08 0.75"/>  <!-- south -->
+    <geom material="wall" pos="6.4 7.2 0.75" type="box" size="8.8 0.08 0.75"/>  <!-- north -->
+
+    <!-- ===== H1 — y=3, gap x=1..3 (start ↔ north) ===== -->
+    <geom material="wall" pos="-0.8 2.4 0.75" type="box" size="1.6 0.08 0.75"/>  <!-- x=-3..1 -->
+    <geom material="wall" pos="3.2 2.4 0.75" type="box" size="0.8 0.08 0.75"/>  <!-- x=3..5  -->
+
+    <!-- ===== H2 — y=-3, gaps x=-1..1 and x=12..14 (start+north ↔ south) ===== -->
+    <geom material="wall" pos="-1.6 -2.4 0.75" type="box" size="0.8 0.08 0.75"/>  <!-- x=-3..-1  -->
+    <geom material="wall" pos="5.2 -2.4 0.75" type="box" size="4.4 0.08 0.75"/>  <!-- x=1..12   -->
+    <geom material="wall" pos="13.2 -2.4 0.75" type="box" size="2 0.08 0.75"/>  <!-- x=14..19  -->
+
+    <!-- ===== V1 — x=6, gap y=-1..1 (start ↔ east-mid) ===== -->
+    <geom material="wall" pos="4.8 -4 0.75" type="box" size="0.08 3.2 0.75"/>  <!-- y=-9..-1 -->
+    <geom material="wall" pos="4.8 1.6 0.75" type="box" size="0.08 0.8 0.75"/>  <!-- y=1..3   -->
+
+    <!-- ===== H3 — y=6, gap x=0.5..2.5 (NW-lo ↔ NW-hi) ===== -->
+    <geom material="wall" pos="-1 4.8 0.75" type="box" size="1.4 0.08 0.75"/>  <!-- x=-3..0.5 -->
+    <geom material="wall" pos="3.8 4.8 0.75" type="box" size="1.8 0.08 0.75"/>  <!-- x=2.5..7  -->
+
+    <!-- ===== V2 — x=12, gap y=5.5..7.5 (NW-lo-east ↔ NE) ===== -->
+    <geom material="wall" pos="9.6 3.4 0.75" type="box" size="0.08 1 0.75"/>  <!-- y=3..5.5  -->
+    <geom material="wall" pos="9.6 6.6 0.75" type="box" size="0.08 0.6 0.75"/>  <!-- y=7.5..9  -->
+
+    <!-- ===== V3 — x=12, gap y=-6.5..-4.5 (SE-west ↔ SE-east) ===== -->
+    <geom material="wall" pos="9.6 -6.2 0.75" type="box" size="0.08 1 0.75"/>  <!-- y=-9..-6.5  -->
+    <geom material="wall" pos="9.6 -3 0.75" type="box" size="0.08 0.6 0.75"/>  <!-- y=-4.5..-3  -->
+
+    <!-- ===== Scattered obstacles ===== -->
+    <!-- start room -->
+    <geom pos="2.4 -1.2 0.5" type="box"      size="0.24 0.24 0.5" rgba="0.80 0.30 0.30 1"/>
+    <!-- NW-lo -->
+    <geom pos="1.6 4 0.5" type="cylinder"  size="0.2 0.5"      rgba="0.90 0.70 0.20 1"/>
+    <!-- NW-hi -->
+    <geom pos="-1.2 6 0.4" type="box"      size="0.24 0.24 0.4" rgba="0.65 0.30 0.80 1"/>
+    <!-- east-mid -->
+    <geom pos="8 0 0.5" type="box"       size="0.2 0.32 0.5" rgba="0.30 0.70 0.35 1"/>
+    <geom pos="12.8 1.2 0.4" type="cylinder"  size="0.16 0.4"      rgba="0.30 0.55 0.80 1"/>
+    <!-- NE -->
+    <geom pos="12 4 0.4" type="box"       size="0.24 0.24 0.4" rgba="0.90 0.70 0.20 1"/>
+    <!-- SW -->
+    <geom pos="-1.2 -4.8 0.4" type="box"      size="0.28 0.2 0.4" rgba="0.30 0.50 0.80 1"/>
+    <!-- SE-west -->
+    <geom pos="7.2 -5.6 0.4" type="cylinder"  size="0.16 0.4"      rgba="0.20 0.70 0.70 1"/>
+    <!-- SE-east -->
+    <geom pos="12 -4.8 0.5" type="cylinder"  size="0.2 0.5"      rgba="0.90 0.50 0.20 1"/>
+  </worldbody>
+</mujoco>

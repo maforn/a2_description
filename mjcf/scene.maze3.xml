@@ -34,8 +34,8 @@
           </body>
         </body>
       </body>
-      <body name="box_0006" pos="-0.106359 -2.499793 0.3" quat="0.98736 2.33471e-33 -6.27186e-34 -0.158493">
-        <geom name="box_0006_geom" type="box" size="4.15 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+      <body name="box_0006" pos="-0.282596 -2.441717 0.3" quat="0.98736 2.33471e-33 -6.27186e-34 -0.158493">
+        <geom name="box_0006_geom" type="box" size="4.33556 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
       </body>
       <body name="box_0007" pos="-5.54366 -0.8 0.3" quat="0.987265 0 0 -0.159082">
         <geom name="box_0007_geom" type="box" size="0.175 5 0.3" rgba="1 1 1 1" mass="0.2"/>

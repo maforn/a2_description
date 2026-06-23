@@ -1,0 +1,141 @@
+<mujoco model="a2 outdoor foam course">
+  <include file="a2.xml"/>
+
+  <!--
+    Outdoor foam-block obstacle course.
+    Reference: outdoor_image.jpeg (photo) + outdoor_map.jpeg (DLIO LiDAR map).
+    LiDAR covered: cluster + corridor 1.  Arm 2 is from photo only.
+
+    Terrain: terrain_outdoor.png heightfield — multi-scale noise + gentle
+             north slope (quarry floor rises toward the embankment).
+             hfield size="22 18 0.4 0.1" → terrain spans ±22 m in x, ±18 m in y,
+             max height 0.4 m above lowest point, base slab 0.1 m thick.
+             hfield is centred at (6, 4) so the foam course sits in its lower half.
+
+    Enclosure: 4 concrete walls form a closed box that fills the quarry mouth.
+      north  y=+24  (behind embankment)
+      south  y=-14
+      west   x=-12
+      east   x=+24
+
+    Foam blocks: ~0.5 m tall, ~0.6 m wide, white polystyrene.
+
+    Course layout (top-down, metres, robot at origin):
+        -5  -1  0          8  10           18
+    +2   +---+             |   |            |
+         |   |  ←robot    corr1            |
+    +0  west  |            |   |            |
+         |   |             |   |            |
+    -2   +---+  +----------+   +------------+
+                               arm2 (photo only)
+    -6                 +------------------------+
+    -8                 +------------------------+
+  -->
+
+  <statistic center="6.0 4.0 0.5" extent="16.0"/>
+
+  <visual>
+    <headlight diffuse="0.50 0.48 0.42" ambient="0.25 0.25 0.22" specular="0 0 0"/>
+    <rgba haze="0.28 0.38 0.48 1"/>
+    <global azimuth="-110" elevation="-25"/>
+  </visual>
+
+  <asset>
+    <!-- Terrain heightfield: 256×256 grayscale PNG, north slope + multi-scale noise -->
+    <hfield name="terrain" file="terrain_outdoor.png" size="22 18 0.4 0.1"/>
+
+    <texture type="skybox" builtin="gradient"
+      rgb1="0.52 0.68 0.88" rgb2="0.82 0.80 0.74" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+      rgb1="0.55 0.51 0.45" rgb2="0.47 0.44 0.39" markrgb="0.50 0.47 0.42"
+      width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true"
+      texrepeat="5 5" reflectance="0.04"/>
+    <material name="foam"     rgba="0.94 0.94 0.94 1"/>
+    <material name="concrete" rgba="0.60 0.58 0.56 1"/>
+
+    <mesh name="umbrella_mesh"  file="umbrella.obj"  scale="0.1  0.1  0.1"/>
+    <mesh name="backpack_mesh"  file="backpack.obj"  scale="1    1    1"/>
+    <mesh name="wallclock_mesh" file="wallclock.obj" scale="0.01 0.01 0.01"/>
+    <texture name="umbrella_tex"  type="2d" file="meshes/umbrella.png"/>
+    <material name="umbrella_mat" texture="umbrella_tex"/>
+    <texture name="wallclock_tex" type="2d" file="meshes/wallclock.png"/>
+    <material name="wallclock_mat" texture="wallclock_tex"/>
+  </asset>
+
+  <worldbody>
+    <!-- Sunlight (upper-right as in photo) -->
+    <light pos="8 -8 14" dir="-0.4 0.4 -1" directional="true"
+           diffuse="0.88 0.84 0.76" specular="0.18 0.18 0.12"/>
+    <!-- Ambient fill -->
+    <light pos="4 -4 10" dir="0 0 -1" directional="false"
+           diffuse="0.28 0.28 0.28" specular="0 0 0"/>
+
+    <!-- Uneven quarry terrain (replaces flat plane) -->
+    <geom name="terrain" type="hfield" hfield="terrain" pos="6 4 0"
+          material="groundplane" contype="1" conaffinity="1"/>
+
+    <!-- ===== Enclosure walls (quarry boundary — robot cannot escape) ===== -->
+    <!-- Each wall is 2.5 m tall (half-height 1.25) so the robot cannot climb out -->
+    <geom name="enc_north" material="concrete"
+          pos=" 6.0  21.0 1.25" type="box" size="15.0 0.4  1.25"/>
+    <geom name="enc_south" material="concrete"
+          pos=" 6.0 -11.0 1.25" type="box" size="15.0 0.4  1.25"/>
+    <geom name="enc_west"  material="concrete"
+          pos="-9.0   5.0 1.25" type="box" size="0.4  16.0 1.25"/>
+    <geom name="enc_east"  material="concrete"
+          pos=" 21.0  5.0 1.25" type="box" size="0.4  16.0 1.25"/>
+
+    <!-- Concrete embankment (north face, visible in photo) -->
+    <geom name="embankment" material="concrete"
+          pos="-2.0 20.0 1.5" type="box" size="24.0 0.6 1.5"/>
+
+    <!-- ===== Left cluster (U-shape, open east, x∈[-5,-1] y∈[-2,+2]) ===== -->
+    <geom name="cluster_w" material="foam" pos="-5.0  0.0  0.25" type="box" size="0.30 2.0  0.25"/>
+    <geom name="cluster_n" material="foam" pos="-3.0  2.0  0.25" type="box" size="2.0  0.30 0.25"/>
+    <geom name="cluster_s" material="foam" pos="-3.0 -2.0  0.25" type="box" size="2.0  0.30 0.25"/>
+
+    <!-- ===== Corridor 1 (LiDAR-confirmed): y∈[-2,+2], x∈[-1,+8] ===== -->
+    <geom name="corr1_n" material="foam" pos=" 3.5  2.0  0.25" type="box" size="4.5  0.30 0.25"/>
+    <geom name="corr1_s" material="foam" pos=" 5.0 -2.0  0.25" type="box" size="3.0  0.30 0.25"/>
+    <geom name="turn_e"  material="foam" pos=" 8.0  0.0  0.25" type="box" size="0.30 2.0  0.25"/>
+
+    <!-- ===== Arm 2 (from photo, not in LiDAR): y∈[-8,-2], x∈[+10,+18] ===== -->
+    <geom name="arm2_n"  material="foam" pos="14.0 -2.0  0.25" type="box" size="4.0  0.30 0.25"/>
+    <geom name="arm2_s"  material="foam" pos="14.0 -8.0  0.25" type="box" size="4.0  0.30 0.25"/>
+    <geom name="arm2_w"  material="foam" pos="10.0 -5.0  0.25" type="box" size="0.30 3.0  0.25"/>
+    <geom name="arm2_e"  material="foam" pos="18.0 -5.0  0.25" type="box" size="0.30 3.0  0.25"/>
+
+    <!-- ===== Small concrete maze (x∈[-8,+2], y∈[+6,+16]) ===== -->
+    <!--
+      S-curve serpentine: entrance south x∈[-4,-2], exit north x∈[-6,-4].
+      Path: enter (center-right) → go WEST through div1 gap (x∈[-6,-4], y=10)
+                                 → go EAST through div2 gap (x∈[-2, 0], y=13)
+                                 → go WEST to exit north.
+      Walls: 1.5 m tall concrete (half-height 0.75 m, half-thickness 0.075 m).
+    -->
+    <!-- outer boundary — 0.5 m tall walls (half-height 0.25 m) -->
+    <geom name="maze2_south_w" material="concrete" pos="-6.0  6.0 0.25" type="box" size="2.0   0.075 0.25"/>
+    <geom name="maze2_south_e" material="concrete" pos=" 0.0  6.0 0.25" type="box" size="2.0   0.075 0.25"/>
+    <geom name="maze2_west"    material="concrete" pos="-8.0 11.0 0.25" type="box" size="0.075 5.0   0.25"/>
+    <geom name="maze2_east"    material="concrete" pos=" 2.0 11.0 0.25" type="box" size="0.075 5.0   0.25"/>
+    <geom name="maze2_north_w" material="concrete" pos="-7.0 16.0 0.25" type="box" size="1.0   0.075 0.25"/>
+    <geom name="maze2_north_e" material="concrete" pos="-1.0 16.0 0.25" type="box" size="3.0   0.075 0.25"/>
+    <!-- div1 (y=10): gap x∈[-6,-4] — west side -->
+    <geom name="maze2_div1_w"  material="concrete" pos="-7.0 10.0 0.25" type="box" size="1.0   0.075 0.25"/>
+    <geom name="maze2_div1_e"  material="concrete" pos="-1.0 10.0 0.25" type="box" size="3.0   0.075 0.25"/>
+    <!-- div2 (y=13): gap x∈[-2,0] — east side -->
+    <geom name="maze2_div2_w"  material="concrete" pos="-5.0 13.0 0.25" type="box" size="3.0   0.075 0.25"/>
+    <geom name="maze2_div2_e"  material="concrete" pos=" 1.0 13.0 0.25" type="box" size="1.0   0.075 0.25"/>
+    <!-- YOLO-detectable objects inside the maze (COCO classes: umbrella, backpack, clock) -->
+    <body name="maze2_umbrella" pos="-3.0 8.0 0.0">
+      <geom type="mesh" mesh="umbrella_mesh" material="umbrella_mat" euler="90 0 0" rgba="0.20 0.60 0.90 1"/>
+    </body>
+    <body name="maze2_backpack" pos="0.5 11.5 0.0">
+      <geom type="mesh" mesh="backpack_mesh" euler="0 0 45" rgba="0.85 0.30 0.10 1"/>
+    </body>
+    <body name="maze2_clock" pos="1.8 14.5 0.20">
+      <geom type="mesh" mesh="wallclock_mesh" material="wallclock_mat" euler="0 0 3.14159" rgba="0.92 0.92 0.92 1"/>
+    </body>
+  </worldbody>
+</mujoco>

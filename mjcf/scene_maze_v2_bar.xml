@@ -68,7 +68,7 @@
     <geom name="step"       material="wall" pos="-5.4   4.75  0.75" type="box" size="0.075 0.45  0.75"/>
     <geom name="wing_n"     material="wall" pos="-7.95  4.3   0.75" type="box" size="2.55  0.075 0.75"/>
     <geom name="west"       material="wall" pos="-10.5  -0.1  0.75" type="box" size="0.075 4.4   0.75"/>
-    <geom name="south_lo"   material="wall" pos="-6.55  -4.5  0.75" type="box" size="3.95  0.075 0.75"/>
+    <geom name="south_lo"   material="wall" pos="-6.19  -4.5  0.75" type="box" size="4.31  0.075 0.75"/>
     <!-- south entrance: gap x∈[-1.1, +0.8] = 1.9 m -->
     <geom name="south_up_w" material="wall" pos="-4.0   0.0   0.75" type="box" size="2.9   0.075 0.75"/>
     <geom name="south_up_e" material="wall" pos=" 1.4   0.0   0.75" type="box" size="0.6   0.075 0.75"/>
@@ -99,26 +99,9 @@
     <geom name="w6p8_b"     material="wall" pos="-4.09  2.26  0.75" type="box" size="0.075 0.75  0.75"/>
 
     <!-- ===== Additional static bar (from scene.json) ===== -->
-    <geom name="box_0063" pos="-0.231348 -2.25 0.15" type="box" size="2.4 0.2 0.2" rgba="0.7843137 0.3921569 0.9411765 1"/>
+    <geom name="box_0063" pos="-0.231348 -2.25 0.75" type="box" size="2.4 0.2 0.75" rgba="0.7843137 0.3921569 0.9411765 1"/>
 
     <!-- ===== Objects ===== -->
 
-    <body name="umbrella" pos="-10.2 3.0 0.0">
-      <geom type="mesh" mesh="umbrella_mesh" material="umbrella_mat" euler="90 0 0" rgba="0.90 0.20 0.10 1"/>
-    </body>
-    <geom pos="-8.5 -4.03 0.30" type="box"      size="0.30 0.30 0.30" rgba="0.78 0.25 0.20 1"/>
-    <geom pos="-6.0 -3.0  0.38" type="cylinder"  size="0.20 0.38"     rgba="0.20 0.62 0.58 1"/>
-
-    <body name="backpack" pos="-4.0 3.5 0.0">
-      <geom type="mesh" mesh="backpack_mesh" euler="0 0 135" rgba="0.20 0.50 0.30 1"/>
-    </body>
-    <geom pos="-3.8 -1.5 0.25" type="box"        size="0.25 0.20 0.25" rgba="0.25 0.40 0.75 1"/>
-    <geom pos="-4.0 -3.5 0.38" type="cylinder"   size="0.22 0.38"     rgba="0.88 0.52 0.15 1"/>
-
-    <body name="wall_clock" pos="-1.5 5.12 0.90">
-      <geom type="mesh" mesh="wallclock_mesh" material="wallclock_mat" euler="0 0 3.14159" rgba="0.92 0.92 0.92 1"/>
-    </body>
-    <geom pos="-1.0 3.5 0.38" type="cylinder"   size="0.20 0.38"     rgba="0.85 0.70 0.15 1"/>
-    <geom pos=" 0.8 1.5 0.25" type="box"         size="0.25 0.20 0.25" rgba="0.55 0.25 0.75 1"/>
   </worldbody>
 </mujoco>

@@ -1,0 +1,76 @@
+<mujoco model="a2 scene_maze3_meshes">
+  <include file="a2_maze3.xml"/>
+
+  <statistic center="1.53 0 0.1" extent="10"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="-130" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+
+    <!-- Mesh Assets -->
+    <mesh name="umbrella_mesh"  file="umbrella.obj"  scale="0.1 0.1 0.1"/>
+    <mesh name="backpack_mesh"  file="backpack.obj"  scale="1 1 1"/>
+    <mesh name="wallclock_mesh" file="wallclock.obj" scale="0.01 0.01 0.01"/>
+
+    <texture name="umbrella_tex" type="2d" file="meshes/umbrella.png"/>
+    <material name="umbrella_mat" texture="umbrella_tex"/>
+
+    <texture name="wallclock_tex" type="2d" file="meshes/wallclock.png"/>
+    <material name="wallclock_mat" texture="wallclock_tex"/>
+  </asset>
+
+  <worldbody>
+    <light pos="1.53 0 10" dir="0 0 -1" directional="true"/>
+    <body name="floor" pos="1.53473 0 0" quat="1 -2.73691e-48 0 0">
+      <geom name="floor_geom" type="plane" size="10 10 0.0005" rgba="0.498039 0.498039 0.498039 1" mass="0.2"/>
+      <body name="box_0002" pos="0.494296 2.69243 0.3" quat="0.995882 -2.23489e-33 -2.03449e-34 -0.090658">
+        <geom name="box_0002_geom" type="box" size="5 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+        <body name="box_0003" pos="6 -1.36779 0" quat="0.935523 -3.76307e-33 -5.02354e-33 -0.353266">
+          <geom name="box_0003_geom" type="box" size="2.5 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+          <body name="box_0005" pos="6.2 -3.4915 0" quat="0.934956 0 0 -0.354763">
+            <geom name="box_0005_geom" type="box" size="5 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+            <body name="box_0009" pos="0.2 -3.73091 -0.125" quat="1 -4.61534e-34 0 0">
+              <geom name="box_0009_geom" type="box" size="3 0.175 0.175" rgba="1 1 1 1" mass="0.2"/>
+              <body name="box_0010" pos="8.88178e-16 -3.35035 0.125" quat="1 -4.61534e-34 5.86672e-33 0">
+                <geom name="box_0010_geom" type="box" size="2 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="box_0006" pos="-0.282596 -2.441717 0.3" quat="0.98736 2.33471e-33 -6.27186e-34 -0.158493">
+        <geom name="box_0006_geom" type="box" size="4.33556 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+      </body>
+      <body name="box_0007" pos="-5.54366 -0.8 0.3" quat="0.987265 0 0 -0.159082">
+        <geom name="box_0007_geom" type="box" size="0.175 5 0.3" rgba="1 1 1 1" mass="0.2"/>
+        <body name="box_0008" pos="7 -4.43652 0" quat="1 0 0 0">
+          <geom name="box_0008_geom" type="box" size="7.5 0.175 0.3" rgba="1 1 1 1" mass="0.2"/>
+        </body>
+      </body>
+    </body>
+    <camera name="camera" pos="1 -9.86076e-32 -2.81717" quat="3.26795e-07 6.16298e-33 1 6.32592e-34" fovy="45"/>
+
+    <!-- Collision-free visual objects for recognition (meshes) -->
+    <!-- Umbrella in the central room area -->
+    <body name="umbrella" pos="0.0 0.0 0.0">
+      <geom type="mesh" mesh="umbrella_mesh" material="umbrella_mat" euler="90 0 0" rgba="0.8 0.1 0.1 1" contype="0" conaffinity="0"/>
+    </body>
+
+    <!-- Backpack in the southern starting corridor -->
+    <body name="backpack" pos="1.0 -4.5 0.0">
+      <geom type="mesh" mesh="backpack_mesh" euler="0 0 -45" rgba="0.2 0.5 0.3 1" contype="0" conaffinity="0"/>
+    </body>
+
+    <!-- Wall clock placed near wall box_0007 -->
+    <body name="wall_clock" pos="-3.8 0.0 0.8">
+      <geom type="mesh" mesh="wallclock_mesh" material="wallclock_mat" euler="0 0 3.14159" rgba="0.9 0.9 0.9 1" contype="0" conaffinity="0"/>
+    </body>
+  </worldbody>
+</mujoco>
